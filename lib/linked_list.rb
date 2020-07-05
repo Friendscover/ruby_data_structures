@@ -1,6 +1,3 @@
-#node has data, next
-#next node has data, next (head + tail)
-#linked list contains all nodes; calls nodes
 #TODO: refactor traversing into own function
 
 class Node
@@ -19,7 +16,7 @@ class LinkedList
 
   def append(value)
     if @head == nil
-      #prepend item
+      prepend(value)
     else
       temp = @head
 
@@ -32,7 +29,6 @@ class LinkedList
     end
   end
 
-  #add value to start of the list
   def prepend(value)
     #im surprised this works => next node is previous @head before head is new #assigned
     @head = Node.new(value, @head)
@@ -73,6 +69,19 @@ class LinkedList
 
     temp.value
   end
+
+  #its late and im suprised this seems to be working, error if list <2
+  def pop
+    current = @head.next_node
+    previous = @head
+
+    while current.next_node != nil
+      current = current.next_node 
+      previous = previous.next_node
+    end
+
+    previous.next_node = nil
+  end
 end
 
 list = LinkedList.new()
@@ -89,3 +98,10 @@ puts "Head: #{list.head}"
 puts "Tail: #{list.tail}"  
 puts "Index 0 : #{list.at(0)}"
 puts "Index 10 #{list.at(10)}"
+j = 0
+while j < 5
+  list.pop
+  j += 1
+end
+puts "#{list.size}"
+p list
