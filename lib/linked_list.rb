@@ -1,5 +1,3 @@
-#TODO: refactor traversing into own function
-
 class Node
   attr_accessor :value, :next_node
 
@@ -18,42 +16,41 @@ class LinkedList
     if @head == nil
       prepend(value)
     else
-      temp = @head
+      current = @head
 
-      #traversing the node unitl next node is the last because last == nil
-      while temp.next_node != nil
-        temp = temp.next_node
+      while current.next_node != nil
+        current = current.next_node
       end
 
-      temp.next_node = Node.new(value)
+      current.next_node = Node.new(value)
     end
   end
 
   def prepend(value)
-    #im surprised this works => next node is previous @head before head is new #assigned
+    #the new Nodes.next_node is assigned @head before @head is reassigned
     @head = Node.new(value, @head)
   end
 
   def size
-    temp = @head
+    current = @head
     counter = 1
 
-    while temp.next_node != nil
-      temp = temp.next_node
+    while current.next_node != nil
+      current = current.next_node
       counter += 1
     end
     return counter
   end
 
   def at(index)
-    temp = @head
+    current = @head
     counter = 0
 
     while counter != index
-      temp = temp.next_node
+      current = current.next_node
       counter += 1
     end
-    return temp.value
+    return current.value
   end
 
   def head
@@ -61,26 +58,65 @@ class LinkedList
   end
 
   def tail
-    temp = @head
+    current = @head
 
-    while temp.next_node != nil
-      temp = temp.next_node
+    while current.next_node != nil
+      current = current.next_node
     end
 
-    temp.value
+    current.value
   end
 
   #its late and im suprised this seems to be working, error if list <2
   def pop
-    current = @head.next_node
-    previous = @head
+    if size == 1
+      @head.next_node = nil
+    else
+      current = @head.next_node
+      previous = @head
+
+      while current.next_node != nil
+        current = current.next_node 
+        previous = previous.next_node
+      end
+
+      previous.next_node = nil
+    end
+  end
+
+  def contains?(value)
+    current = @head
+    contains = false
 
     while current.next_node != nil
-      current = current.next_node 
-      previous = previous.next_node
+      if current.value == value
+        contains = true
+      end
+      current = current.next_node
     end
+    contains
+  end
 
-    previous.next_node = nil
+  def find(value)
+    current = @head
+    counter = 0
+
+    while current.next_node != nil
+      break if current.value == value
+      current = current.next_node
+      counter += 1
+    end
+    counter
+  end
+
+  def to_s
+    current = @head
+  
+    until current.nil?
+      print " ( #{current.value} ) ->"
+      current = current.next_node
+    end
+    print " nil \n"
   end
 end
 
@@ -92,12 +128,14 @@ while i < 11
   i += 1
 end
 
-p list
+list.to_s
 puts "Size: #{list.size}"  
 puts "Head: #{list.head}"  
 puts "Tail: #{list.tail}"  
-puts "Index 0 : #{list.at(0)}"
-puts "Index 10 #{list.at(10)}"
+puts "At 0 : #{list.at(0)}"
+puts "At 10 #{list.at(10)}"
+p list.find(15)
+
 j = 0
 while j < 5
   list.pop
@@ -105,3 +143,5 @@ while j < 5
 end
 puts "#{list.size}"
 p list
+p list.contains?(1)
+list.to_s
