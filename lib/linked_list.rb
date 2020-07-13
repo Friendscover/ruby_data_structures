@@ -2,7 +2,7 @@ class Node
   attr_accessor :value, :next_node
 
   def initialize(value = nil, next_node = nil)
-    @value = value;
+    @value = value
     @next_node = next_node
   end
 end
@@ -118,6 +118,42 @@ class LinkedList
     end
     print " nil \n"
   end
+
+  def insert_at(value, index)
+    if index == 0
+      prepend(value)
+    else
+      current = @head.next_node
+      previous = @head
+      counter = 1
+
+      while counter != index
+        current = @head.next_node
+        previous = @head.next_node
+        counter += 1
+      end
+
+      previous.next_node = Node.new(value, current.next_node)
+    end
+  end
+  
+  def remove_at(index)
+    counter = 1
+    current = @head.next_node
+    previous = @head
+
+    if index == 0
+      @head = current
+    else
+      while counter != index
+        current = current.next_node
+        previous = previous.next_node
+        counter += 1
+      end
+
+      previous.next_node = current.next_node
+    end
+  end
 end
 
 list = LinkedList.new()
@@ -142,6 +178,15 @@ while j < 5
   j += 1
 end
 puts "#{list.size}"
-p list
 p list.contains?(1)
+list.to_s
+list.insert_at("this is 2", 1)
+list.to_s
+list.insert_at("this is 2 again", 2)
+list.to_s
+list.remove_at(0)
+list.to_s
+list.remove_at(1)
+list.to_s
+list.remove_at(2)
 list.to_s
