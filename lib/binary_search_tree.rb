@@ -69,13 +69,10 @@ class Tree
 
   #wip
   def delete(value)
-    #if node left + right = nil => remove node
-    # one child => copy the to previous child
-    # two child => inorder succesor?
     node = @root
-    parent = nil
+    parent = @root
 
-    #traverse tree and update parent and child
+    #traverse tree and update parent and child until value == parent.data
     until value == node.data
       if value < node.data
         parent = node
@@ -87,12 +84,46 @@ class Tree
     end
 
     #delete if node has no children
-    p parent
-    puts ""
-    p node
+    if node.left == nil && node.right == nil
+      if parent.left == node
+        parent.left = nil
+      else
+        parent.right = nil
+      end
+    #delete if node has two children => inorder?
+    elsif node.left != nil && node.right != nil
+      node = node.right
+      parent = parent.right
+      min = node.data
+    
+      #find lowest value in subtree
+      while node.left != nil
+        min = node.left.data
+        node = node.left
+      end
+
+      parent.data = min
+
+      parent.right = node.right
+    #delete if node has one child
+    elsif node.left != nil || node.right != nil
+      if node.left != nil 
+        parent.left = node.left
+      else
+        parent.right = node.right
+      end
+    end
+  end
+
+  #display as tree
+  def pretty_print(node = root, prefix="", is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
+    puts "#{prefix}#{is_left ? "└── " : "┌── "}#{node.data.to_s}"
+    pretty_print(node.left, "#{prefix}#{is_left ? " " : "│ "}", true) if node.left
   end
 end
 
+#test methods
 a1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 a2 = [1, 2, 3, 5, 6]
 p a2.length
@@ -103,4 +134,14 @@ t1.insert(7)
 t1.insert(8)
 t1.insert(9)
 p t1
-t1.delete(1)
+t1.pretty_print
+t1.delete(2)
+t1.pretty_print
+t1.delete(6)
+t1.pretty_print
+t1.delete(7)
+t1.pretty_print
+t1.delete(8)
+t1.pretty_print
+t1.delete(5)
+t1.pretty_print

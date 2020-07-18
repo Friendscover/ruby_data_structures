@@ -12,3 +12,11 @@ Run it from the main directory.
 ```
 ruby lib/linked_list
 ```
+# Binary Search Tree
+This project was also included as part of TOP Full Stack Curriculum.
+
+Check it out at [TheOdinProjekt](https://www.theodinproject.com/courses/ruby-programming/lessons/data-structures-and-algorithms) !
+
+``` 
+ruby lib/binary_search_tree
+```
