@@ -115,6 +115,25 @@ class Tree
     end
   end
 
+  def find(value)
+    node = @root
+  
+    #does seem to work, who knows
+    loop do
+      if node.data == value
+        return node
+      elsif node.right == nil && node.left == nil
+        return nil
+      elsif value < node.data && node.left != nil
+        node = node.left
+      elsif value > node.data && node.right != nil
+        node = node.right
+      else
+        return "Value not found"
+      end
+    end
+  end
+
   #display as tree
   def pretty_print(node = root, prefix="", is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
@@ -145,3 +164,7 @@ t1.delete(8)
 t1.pretty_print
 t1.delete(5)
 t1.pretty_print
+p t1.find(1)
+p t1.find(9)
+p t1.find(33)
+p t1.find(3)
