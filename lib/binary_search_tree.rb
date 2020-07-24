@@ -26,7 +26,7 @@ class Tree
   end
 
   def build_tree(array)
-    #base case is not met => stackoverflow
+    #base case 
     if array.empty? 
       return nil
     else
@@ -43,8 +43,6 @@ class Tree
   end
 
   def insert(value)
-    #check node for value 
-    #if value <= root got left; if vlaue >= right go right if both 
     node = @root
     
     #infinite loop but breaking out of it if node was added on left or right side
@@ -67,7 +65,6 @@ class Tree
     end
   end
 
-  #wip
   def delete(value)
     node = @root
     parent = @root
@@ -90,7 +87,7 @@ class Tree
       else
         parent.right = nil
       end
-    #delete if node has two children => inorder?
+    #delete if node has two children 
     elsif node.left != nil && node.right != nil
       node = node.right
       parent = parent.right
@@ -134,6 +131,59 @@ class Tree
     end
   end
 
+  def level_order
+    node_values = []
+    traverse_array = []
+    node = @root
+    
+    traverse_array << node
+
+    until traverse_array.empty?
+      #shift first node out of traversing array
+      node = traverse_array.shift
+
+      node_values << node.data
+      #add left node to queue, add right node to queue
+      traverse_array << node.left if node.left != nil
+      traverse_array << node.right if node.right != nil
+    end
+
+    return node_values
+  end
+  
+  def inorder(node = @root, array = [])
+    if node == nil
+      return
+    else
+      left = inorder(node.left, array)
+      array << node.data
+      right = inorder(node.right, array)
+    end
+    return array
+  end
+
+  def preorder(node = @root, array = [])
+    if node == nil 
+      return
+    else
+      array << node.data
+      left = preorder(node.left, array)
+      right = preorder(node.right, array)
+    end
+    return array
+  end
+
+  def postorder(node = @root, array = [])
+    if node == nil
+      return
+    else
+      left = postorder(node.left, array)
+      right = postorder(node.right, array)
+      array << node.data
+    end
+    return array
+  end
+
   #display as tree
   def pretty_print(node = root, prefix="", is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
@@ -154,6 +204,9 @@ t1.insert(8)
 t1.insert(9)
 p t1
 t1.pretty_print
+p t1.inorder
+p t1.preorder
+p t1.postorder
 t1.delete(2)
 t1.pretty_print
 t1.delete(6)
@@ -168,3 +221,8 @@ p t1.find(1)
 p t1.find(9)
 p t1.find(33)
 p t1.find(3)
+puts "--------------------"
+p t1.level_order
+p t1.inorder
+p t1.preorder
+p t1.postorder
