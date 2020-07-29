@@ -184,6 +184,26 @@ class Tree
     return array
   end
 
+  def depth(node = @root)
+    #recursive call on node an return the deepest node of left and right
+    #side of tree, and adding +1 in every level 
+    if node == nil
+      return -1
+    else
+      return [depth(node.left), depth(node.right)].max + 1
+    end
+  end
+
+  def balanced?
+    node = @root
+
+    if depth(node.left) > depth(node.right)
+      return (depth(node.left) - depth(node.right)) <= 1 ? true : false
+    else
+      return (depth(node.right) - depth(node.left)) <= 1 ? true : false
+    end
+  end
+
   #display as tree
   def pretty_print(node = root, prefix="", is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
@@ -204,11 +224,14 @@ t1.insert(8)
 t1.insert(9)
 p t1
 t1.pretty_print
+p t1.depth
+p t1.balanced?
 p t1.inorder
 p t1.preorder
 p t1.postorder
 t1.delete(2)
 t1.pretty_print
+p t1.balanced?
 t1.delete(6)
 t1.pretty_print
 t1.delete(7)
@@ -226,3 +249,5 @@ p t1.level_order
 p t1.inorder
 p t1.preorder
 p t1.postorder
+p t1.depth
+p t1.balanced?
