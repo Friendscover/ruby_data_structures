@@ -204,6 +204,13 @@ class Tree
     end
   end
 
+  def rebalance
+    #get current tree and create a level order array 
+    #create a new tree with the current level order
+    level_array = level_order
+    @root = build_tree(level_array)
+  end
+
   #display as tree
   def pretty_print(node = root, prefix="", is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
@@ -212,42 +219,40 @@ class Tree
   end
 end
 
-#test methods
-a1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-a2 = [1, 2, 3, 5, 6]
-p a2.length
-t1 = Tree.new(a2)
-p t1.root
-t1.insert(4)
-t1.insert(7)
-t1.insert(8)
-t1.insert(9)
-p t1
-t1.pretty_print
-p t1.depth
-p t1.balanced?
-p t1.inorder
-p t1.preorder
-p t1.postorder
-t1.delete(2)
-t1.pretty_print
-p t1.balanced?
-t1.delete(6)
-t1.pretty_print
-t1.delete(7)
-t1.pretty_print
-t1.delete(8)
-t1.pretty_print
-t1.delete(5)
-t1.pretty_print
-p t1.find(1)
-p t1.find(9)
-p t1.find(33)
-p t1.find(3)
-puts "--------------------"
-p t1.level_order
-p t1.inorder
-p t1.preorder
-p t1.postorder
-p t1.depth
-p t1.balanced?
+#simple script
+#create a binary search tree from an array of random numbers
+random_array = Array.new(15) { rand(1..100) }
+bst = Tree.new(random_array)
+
+#confirm that the array is balanced 
+p bst.balanced?
+
+#print out all elements in level, pre/post/inorder
+puts "Level Order: #{bst.level_order}"
+puts "Pre Order: #{bst.preorder}"
+puts "Post Order: #{bst.postorder}"
+puts "Inorder Order: #{bst.inorder}"
+
+#unbalance tree by adding several numbers > 100
+add_values_to_tree = Array.new(10) { rand(100..1000) }
+until add_values_to_tree.empty?
+  bst.insert(add_values_to_tree.shift)
+end
+
+#confirm that the tree is unbalanced
+p bst.balanced? 
+
+#balance the tree by calling rebalance
+bst.rebalance
+
+#confirm that the tree is balance
+p bst.balanced?
+
+#print out all elements in level, pre/post/inorder
+puts "Level Order: #{bst.level_order}"
+puts "Pre Order: #{bst.preorder}"
+puts "Post Order: #{bst.postorder}"
+puts "Inorder Order: #{bst.inorder}"
+
+#print out tree
+bst.pretty_print
