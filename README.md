@@ -20,3 +20,12 @@ Check it out at [TheOdinProjekt](https://www.theodinproject.com/courses/ruby-pro
 ``` 
 ruby lib/binary_search_tree
 ```
+
+# Knight's Travails
+This is the last part of the Data Structures assignment.
+
+Check it out at [TheOdinProjekt](https://www.theodinproject.com/courses/ruby-programming/lessons/data-structures-and-algorithms) !
+
+``` 
+ruby lib/knight_moves.rb
+```
