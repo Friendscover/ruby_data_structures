@@ -35,22 +35,25 @@ class Knight
     #else generate new node for current position
     #needs to have a better way to define depth of tree/shortest distance to end
     queue = []
-    counter = 0
-    queue << start_position
-
-    until queue.nil?
-      counter += 1
-      position = queue.shift
-
-      if position == end_position
-        return "It took #{counter} steps to find #{position}"
-      else
-        next_positions = generate_moves(position)
-
-        next_positions.each do |position|
-          queue << position
+    adj_list = [[start_position]]
+    i = 0
+    
+    loop do 
+      queue = adj_list[i]
+      
+      queue.each do |move|
+        if move == end_position
+          adj_list.each do |element|
+            p element
+          end
+          
+          return "Thats the end with #{i} steps"
+        else
+          new_moves = generate_moves(move)
+          adj_list << new_moves
         end
       end
+      i += 1
     end
   end
 
@@ -89,5 +92,8 @@ k1 = Knight.new
 #k1.set_position(0, 0, 2)
 p k1.knight_moves([0, 0],[1, 2])
 p k1.knight_moves([0, 0],[3, 3])
+p k1.generate_moves([0, 0])
+p k1.knight_moves([0, 0], [3, 3])
+p k1.knight_moves([3, 3], [4, 3])
 
 
