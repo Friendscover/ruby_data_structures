@@ -1,11 +1,5 @@
-#simplest way to get from one square to another
-#output all squares along the way
-#board 2 dimensional coordinates
-#[0, 0], [1,2]
-#all possible moves as a child, out of board => exit
-#adjacency list > all possible moves displayed as 2d array
 class Board
-  attr_accessor :board
+  attr_accessor :board 
 
   def initialize
   @board = Array.new(8) { Array.new(8) }
@@ -29,32 +23,67 @@ class Knight
   end
 
   def knight_moves(start_position, end_position)
-    #set node as start_position
-    #generate moves for node => check if new node is goal?
-    #queue the nodes
-    #else generate new node for current position
-    #needs to have a better way to define depth of tree/shortest distance to end
     queue = []
     adj_list = [[start_position]]
     i = 0
-    
+
     loop do 
-      queue = adj_list[i]
+      #put the new moves in queue to generate moves out of that position
+      adj_list[i].each do |move|
+        queue << move
+      end
       
-      queue.each do |move|
-        if move == end_position
-          adj_list.each do |element|
-            p element
-          end
-          
-          return "Thats the end with #{i} steps"
-        else
-          new_moves = generate_moves(move)
-          adj_list << new_moves
+      i += 1
+      
+      until queue.empty?
+        move = queue.shift 
+        #temp array to store all moves to add it at level i of the adj list
+        #for each move 
+        temp = []
+
+        move.each do |position|
+          new_position = generate_moves(position)
+          temp << new_position
+          #remove duplicate moves if two moves land on the same positon
+          temp.uniq!
+        end
+
+        adj_list << temp
+
+        if check_end_position(temp, end_position)
+          print_path(adj_list, end_position)
+          return #"#{end_position} #{adj_list.length - 1}" 
         end
       end
-      i += 1
     end
+  end
+
+  def check_end_position(array, end_position)
+    array.each do |element|
+      if element.include?(end_position)
+        return true
+      end
+    end
+    return false
+  end
+
+  def print_path(list, end_position)
+    return_index = 0
+
+    #gets the index of the end_position in the list
+    list.each_with_index do |position, index|
+      position.each do |move|
+        if move.include?(end_position)
+          return_index = index
+        end
+      end
+    end
+
+    p "Test: #{return_index}"
+    list.each do |element|
+      temp = element
+    end
+    
   end
 
   def generate_moves(position)
@@ -92,8 +121,6 @@ k1 = Knight.new
 #k1.set_position(0, 0, 2)
 p k1.knight_moves([0, 0],[1, 2])
 p k1.knight_moves([0, 0],[3, 3])
-p k1.generate_moves([0, 0])
-p k1.knight_moves([0, 0], [3, 3])
+#p k1.generate_moves([0, 0])
+#p k1.knight_moves([0, 0], [3, 3])
 p k1.knight_moves([3, 3], [4, 3])
-
-
